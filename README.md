@@ -3,6 +3,7 @@
   <a href="https://github.com/SemiAnalysisAI/InferenceX/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"></a>
   <a href="https://github.com/SemiAnalysisAI/InferenceX/pulls"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
   <a href="https://inferencex.semianalysis.com/"><img alt="Dashboard" src="https://img.shields.io/badge/Performance-Dashboard-blue"></a>
+  <a href="https://deepwiki.com/SemiAnalysisAI/InferenceX"><img alt="Ask DeepWiki" src="https://deepwiki.com/badge.svg"></a>
   <a href="https://github.com/SemiAnalysisAI/InferenceX"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/SemiAnalysisAI/InferenceX?style=social"></a>
 </p>
 <div align="center">
@@ -43,6 +44,29 @@ LLM Inference performance is driven by two pillars, hardware and software. While
 AI software like SGLang, vLLM, TensorRT-LLM, CUDA, ROCm and achieve this continuous improvement in performance through kernel-level optimizations, distributed inference strategies, and scheduling innovations that increase the pareto frontier of performance in incremental releases that can be just days apart.
  
 This pace of software advancement creates a challenge: benchmarks conducted at a fixed point in time quickly go stale and do not represent the performance that can be achieved with the latest software packages.
+
+
+## Officially Supported Hardware
+
+| SKU | Status |
+| --- | --- |
+| GB300 NVL72 | ✅ |
+| GB200 NVL72 | ✅ |
+| MI355X | ✅ |
+| B300 | ✅ |
+| B200 | ✅ |
+| MI325X | ✅ |
+| MI300X | ✅ |
+| H200 | ✅ |
+| H100 | ✅ |
+| MI455 UALoE72 | Coming Soon 🔜 |
+| Vera Rubin NVL72 | Coming Soon 🔜 |
+| Rubin NVL8 | Coming Soon 🔜 |
+| Chip #1 from Hardware Vendor #1 | Coming Soon 🔜 |
+| Chip #2 from Hardware Vendor #1 | Coming Soon 🔜 |
+| Chip #1 from Hardware Vendor #2 | Coming Soon 🔜 |
+| Chip #1 from Hardware Vendor #3 | Coming Soon 🔜 |
+| Chip #1 from Hardware Vendor #4 | Coming Soon 🔜 |
 
 
 ## Acknowledgements & Supporters

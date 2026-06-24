@@ -4002,6 +4002,13 @@
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1843
 
 - config-keys:
+    - minimaxm3-fp8-mi355x-atom-mtp
+  description:
+    - "Add minimaxm3-fp8-mi355x-atom-mtp: same with EAGLE3 speculative decoding (3 draft tokens)"
+    - "Both use rocm/atom-dev:MiniMax-M3-20260619; search space mirrors FP4 atom variants (ISL=1024,8192 OSL=1024 TP2/TP4/TP8)"
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1867
+
+- config-keys:
     - minimaxm3-fp8-gb300-dynamo-vllm
   description:
     - "Switch to vllm/vllm-openai:nightly-aarch64 — contains upstream head_ratio fix (vllm-project/vllm#45879), avoids gemm1_alpha crash in minimax-m3-0618"

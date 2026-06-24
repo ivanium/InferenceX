@@ -4124,6 +4124,13 @@
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1897
 
 - config-keys:
+    - qwen3.5-fp4-b200-trt-mtp
+  description:
+    - "Add Qwen3.5-397B-A17B-NVFP4 B200 single-node TensorRT-LLM benchmark with MTP speculative decode (1k/1k and 8k/1k) across a TP/TEP/DEP parallelism sweep"
+    - "Image: nvcr.io/nvidia/tensorrt-llm/release:1.3.0rc18"
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1894
+
+- config-keys:
     - dsr1-fp4-b200-sglang
   description:
     - "Update B200 FP4 SGLang image from lmsysorg/sglang:v0.5.12-cu130 to lmsysorg/sglang:v0.5.12.post1."

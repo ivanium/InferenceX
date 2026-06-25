@@ -4205,3 +4205,11 @@
     - "Serve through the text-only language-model path with block size 128, TRITON_ATTN, MiniMax-M3 tool/reasoning parsers, automatic tool choice, and VLLM_USE_BREAKABLE_CUDAGRAPH=0; let vLLM select the MoE backend and retain the default KV-cache dtype."
     - "Mirror the MiniMax-M3 MXFP8 MI355X TP/EP/DP-attention search space at 1k1k and 8k1k for a direct precision comparison."
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1935
+
+- config-keys:
+    - qwen3.5-fp4-gb300-dynamo-sglang
+  description:
+    - "Add Qwen3.5-397B-A17B-NVFP4 GB300 disaggregated multinode SGLang benchmarks via Dynamo."
+    - "Image: lmsysorg/sglang:nightly-dev-cu13-20260608-303757cc."
+    - "8k/1k STP recipes: 1P1D TP4 (conc 1-256), 5P1D DEP4+1D DEP16 (conc 2048, NIXL), 6P1D and 7P1D DEP4+1D DEP16 (conc 5120, Mooncake)."
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1921

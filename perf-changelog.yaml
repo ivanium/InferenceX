@@ -4588,6 +4588,14 @@
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/1994
 
 - config-keys:
+    - dsv4-fp4-mi355x-vllm-agentic
+  description:
+    - "Update vLLM ROCm image from v0.22.0 to nightly-09663abde0f50944a8d5ea30120666024b503faa"
+    - "Pin LMCache to commit 1720917e to fix scheduler ValueError with hybrid KV cache manager"
+    - "Add LMCache KV offload backend with tuned config (blocking timeout, transfer mode)"
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2109
+
+- config-keys:
     - minimaxm3-fp8-mi355x-vllm-mtp
   description:
     - "Pin the EAGLE3 drafter to TRITON_ATTN via the speculative-config attention_backend override; without it the drafter falls back to a slow default backend."

@@ -3,7 +3,7 @@ set -eo pipefail
 set -x
 
 # Agentic trace replay benchmark for DeepSeek-V4-Pro FP4 on B300 using vLLM.
-# v4pro-b300.yaml TP4 and DEP4 recipe. SimpleCPUOffload / MooncakeStore
+# v4pro-b300.yaml TP4, DEP4, and DEP8 recipe. SimpleCPUOffload / MooncakeStore
 #
 # Image is configured in nvidia-master.yaml. The recipe uses FP8 KV cache,
 # sparse DeepSeek-V4 FlashInfer attention with an FP4 indexer cache, mega-MoE,
@@ -12,8 +12,8 @@ set -x
 # Required env vars:
 #   MODEL, TP, CONC, KV_OFFLOADING, TOTAL_CPU_DRAM_GB, RESULT_DIR
 #
-# KV_OFFLOADING=none is used by TP4. DEP4 uses KV_OFFLOADING=dram with
-# KV_OFFLOAD_BACKEND=vllm-simple or mooncake.
+# TP4, TP8, and DEP8 (TP8 + DP-attention) are GPU-resident (KV_OFFLOADING=none).
+# DEP4 uses KV_OFFLOADING=dram with KV_OFFLOAD_BACKEND=vllm-simple or mooncake.
 
 source "$(dirname "$0")/../../benchmark_lib.sh"
 
@@ -31,6 +31,14 @@ export GPU_COUNT
 if [ "$DP_ATTENTION" = "true" ] && [ $((2 * CONC % TP)) -ne 0 ]; then
     echo "Error: DEP requires 2*CONC divisible by TP, got CONC='$CONC' and TP='$TP'" >&2
     exit 1
+fi
+
+# DEP8 (TP8 + DP-attention) is a GPU-resident, high-concurrency arm that is
+# tuned separately from the smaller DEP4 arm (larger prefill token budget,
+# long-prefill chunking, and a lower GPU-memory-utilization headroom).
+IS_DEP8=false
+if [ "$DP_ATTENTION" = "true" ] && [ "$TP" -eq 8 ]; then
+    IS_DEP8=true
 fi
 
 if [[ -n "$SLURM_JOB_ID" ]]; then
@@ -200,10 +208,17 @@ if [ "$EP_SIZE" -gt 1 ]; then
     )
 fi
 if [ "$DP_ATTENTION" = "true" ]; then
-    MODE_ARGS+=(
-        --prefill-schedule-interval 8
-        --max-num-batched-tokens 8192
-    )
+    MODE_ARGS+=(--prefill-schedule-interval 8)
+    if [ "$IS_DEP8" = "true" ]; then
+        # GPU-resident DEP8 gets a larger prefill token budget and chunks long
+        # prefills so decode latency stays bounded at high concurrency.
+        MODE_ARGS+=(
+            --max-num-batched-tokens 16384
+            --long-prefill-token-threshold 4096
+        )
+    else
+        MODE_ARGS+=(--max-num-batched-tokens 8192)
+    fi
 fi
 
 if [ "$DP_ATTENTION" = "true" ]; then
@@ -227,12 +242,18 @@ export TORCH_CUDA_ARCH_LIST="10.0"
 export PYTHONNOUSERSITE=1
 export VLLM_FLOAT32_MATMUL_PRECISION=high
 
+# DEP8 leaves slightly more headroom for its larger prefill token budget.
+GPU_MEM_UTIL=0.96
+if [ "$IS_DEP8" = "true" ]; then
+    GPU_MEM_UTIL=0.95
+fi
+
 { set +x; } 2>/dev/null
 VLLM_CMD=(
     vllm serve "$MODEL_PATH" --served-model-name "$MODEL"
     --host 0.0.0.0
     --port "$VLLM_BACKEND_PORT"
-    --gpu-memory-utilization 0.96
+    --gpu-memory-utilization "$GPU_MEM_UTIL"
     --trust-remote-code
     --no-enable-flashinfer-autotune
     --no-disable-hybrid-kv-cache-manager

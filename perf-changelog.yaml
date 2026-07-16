@@ -4852,3 +4852,11 @@
     - "run_benchmark_serving uses --dsv4 chat-template encoding, required for meaningful MTP acceptance rate; routes to dsv4_fp8_mi325x_mtp.sh via the launcher's spec-decoding=mtp suffix"
     - "256GB MI325X keeps the default eval concurrency (no KV cap needed)"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2195
+
+- config-keys:
+    - dsv4-fp4-gb300-dynamo-sglang-agentic-agg
+    - dsv4-fp4-gb300-dynamo-sglang-agentic-disagg
+  description:
+    - "Add GB300 DeepSeek-V4 dynamo-sglang agentic recipes (agg-tp4 + dep8 disagg pareto)"
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2157
+  

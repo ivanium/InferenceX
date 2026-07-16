@@ -4833,7 +4833,6 @@
     - "Add GLM-5.1 FP8 GB200 disaggregated dynamo-sglang MTP config covering 8k1k, high-throughput and low-latency topologies"
     - "Image: lmsysorg/sglang:v0.5.13.post1-cu130"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2123
-  
 
 - config-keys:
     - dsv4-fp8-mi325x-vllm
@@ -4860,3 +4859,11 @@
     - "Add GB300 DeepSeek-V4 dynamo-sglang agentic recipes (agg-tp4 + dep8 disagg pareto)"
   pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2157
   
+- config-keys:
+    - qwen3.5-fp4-mi355x-sglang
+    - qwen3.5-fp4-mi355x-sglang-mtp
+  description:
+    - "Bump image to lmsysorg/sglang-rocm:v0.5.15-rocm720-mi35x-20260713"
+    - "Add SGLANG_MAMBA_SSM_DTYPE=bfloat16 in both non-MTP and MTP benchmark scripts"
+  pr-link: https://github.com/SemiAnalysisAI/InferenceX/pull/2201  
+

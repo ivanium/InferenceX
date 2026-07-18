@@ -319,6 +319,18 @@ if [[ "$IS_AGENTIC" == "1" ]]; then
     fi
     git cherry-pick --no-commit "$SRT_SLURM_PER_NODE_DP_SHA" || exit 1
 
+    # Multi-node TP/TEP workers spawn several node-local vLLM ranks that all
+    # inherit the process-level VLLM_PORT base. Unset it for those workers so
+    # vLLM can allocate distinct internal ZMQ ports instead of racing to bind
+    # the same addresses.
+    SRT_SLURM_MULTINODE_VLLM_PORT_SHA="de1a4f0257dae5bf871881dc4696e35389c37483"
+    git fetch --depth 2 origin "$SRT_SLURM_MULTINODE_VLLM_PORT_SHA" || exit 1
+    if [[ "$(git rev-parse FETCH_HEAD)" != "$SRT_SLURM_MULTINODE_VLLM_PORT_SHA" ]]; then
+        echo "Error: NVIDIA/srt-slurm multi-node VLLM_PORT fix did not resolve to $SRT_SLURM_MULTINODE_VLLM_PORT_SHA" >&2
+        exit 1
+    fi
+    git cherry-pick --no-commit "$SRT_SLURM_MULTINODE_VLLM_PORT_SHA" || exit 1
+
     # ai-dynamo/dynamo#11303.
     DYNAMO_SCHEMA="src/srtctl/core/schema.py"
     DYNAMO_UPSTREAM_HASH_CLONE='        f"git clone https://github.com/ai-dynamo/dynamo.git && "'
